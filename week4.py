@@ -7,23 +7,24 @@ sc = spark.sparkContext
 
 # Word list
 words = ["apple", "banana", "cherry", "date", "elderberry", "fig",
-         "grape", "honeydew"]
+"grape", "honeydew"]
 
 # Generate sentences on the driver
 num_sentences = 1000
 sentences = [
-    " ".join(random.sample(words, random.randint(1, 6))) + "."
-    for _ in range(num_sentences)
+" ".join(random.sample(words, random.randint(1, 6))) + "."
+for _ in range(num_sentences)
 ]
 
 # Parallelize into RDD
 sentences_rdd = sc.parallelize(sentences)
 
-# Transformation (same as your Scala split)
+# Transformation (replace with your own logic)
 transformed = sentences_rdd.map(lambda sentence: sentence.split(" "))
 
-# Show some results (will go to YARN driver logs in cluster mode)
-for line in transformed.take(100):
-    print(line)
+# Save to HDFS (change the path to something you have write access to)
+output_path = "hdfs:///tmp/week4_output"
+transformed.saveAsTextFile(output_path)
 
 spark.stop()
+
